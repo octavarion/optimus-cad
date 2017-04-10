@@ -1,5 +1,10 @@
-class Point3D(object):
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
+from . import Geometry, init_geometry
+
+
+class Point(Geometry):
+    @init_geometry
+    def __init__(self):
+        pass
+
+    def render(self):
+        return None
