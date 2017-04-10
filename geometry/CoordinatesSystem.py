@@ -1,8 +1,9 @@
 import numpy as np
+from transforms3d.euler import euler2mat
 
 
 class CoordinatesSystem(object):
-    def __init__(self, origin, rotation=None, parent=None):
+    def __init__(self, origin, rotation=(0, 0, 0), parent=None):
         self.origin = origin
         self.rotation = rotation
         self.parent: CoordinatesSystem = parent
@@ -25,9 +26,19 @@ class CoordinatesSystem(object):
     def absolute(self):
         origin = self.origin
         rotation = self.rotation
+
         if self.parent is not None:
-            origin = tuple(np.add(origin, self.parent.absolute.origin))
-        return CoordinatesSystem(origin=origin, rotation=rotation, parent=None)
+            parent_absolute = self.parent.absolute
+            parent_vector = parent_absolute.origin
+            print(f'parent vector: {parent_vector}')
+            print(f'rotation: {parent_absolute.rotation}')
+            print(origin)
+            self_vector = np.dot(origin, euler2mat(*parent_absolute.rotation))
+            print(f'self_vector: {self_vector}')
+            absolute_vector = np.add(self_vector, parent_vector)
+            return CoordinatesSystem(origin=absolute_vector, parent=parent_absolute.parent)
+        else:
+            return self
 
     def __str__(self):
-        return f'x: {self.x}, y: {self.y}, z: {self.z} | yaw: {self.rotation[0]}, pitch: {self.rotation[1]}, roll: {self.rotation[2]}'
+        return f'x: {self.x}, y: {self.y}, z: {self.z} | roll: {self.rotation[0]}, pitch: {self.rotation[1]}, yaw: {self.rotation[2]}'
