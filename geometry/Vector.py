@@ -63,14 +63,14 @@ class Vector(Geometry):
 
     @property
     def endpoint(self) -> CoordinatesSystem:
-        translation = tuple(np.add(self.origin.origin, self.coordinates))
-        rotation = (self.azimuth, 0, self.elevation)
-        return CoordinatesSystem(origin=translation, rotation=rotation, parent=self.origin.parent)
+        # translation = tuple(np.add(self.origin.origin, self.coordinates))
+        rotation = (self.elevation, 0, self.azimuth)
+        return CoordinatesSystem(origin=self.coordinates, rotation=rotation, parent=self.origin)
 
     @endpoint.setter
     def endpoint(self, value: CoordinatesSystem):
-        coordinates = tuple(np.subtract(value.origin, self.origin.origin))
-        self.coordinates = coordinates
+        # coordinates = tuple(np.subtract(value.origin, self.origin.origin))
+        self.coordinates = value.origin
 
     def render(self):
         return None

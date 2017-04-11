@@ -30,11 +30,11 @@ class CoordinatesSystem(object):
         if self.parent is not None:
             parent_absolute = self.parent.absolute
             parent_vector = parent_absolute.origin
-            print(f'parent vector: {parent_vector}')
-            print(f'rotation: {parent_absolute.rotation}')
-            print(origin)
+            # print(f'parent vector: {parent_vector}')
+            # print(f'rotation: {parent_absolute.rotation}')
+            # print(origin)
             self_vector = np.dot(origin, euler2mat(*parent_absolute.rotation))
-            print(f'self_vector: {self_vector}')
+            # print(f'self_vector: {self_vector}')
             absolute_vector = np.add(self_vector, parent_vector)
             return CoordinatesSystem(origin=absolute_vector, parent=parent_absolute.parent)
         else:
